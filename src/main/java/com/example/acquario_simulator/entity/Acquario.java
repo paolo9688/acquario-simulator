@@ -1,6 +1,8 @@
 package com.example.acquario_simulator.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -16,8 +18,10 @@ public class Acquario {
     private Integer capacitaMax;
 
     @NotNull
+    @Min(0)
+    @Max(100)
     @Column(name = "livello-pulizia")
-    private Integer livelloPulizia;
+    private Long livelloPulizia;
 
     @NotNull
     @Column(name = "temperatura-acqua")
@@ -25,14 +29,14 @@ public class Acquario {
 
     public Acquario() {}
 
-    public Acquario(Long id, Integer capacitaMax, Integer livelloPulizia, Double temperaturaAcqua) {
+    public Acquario(Long id, Integer capacitaMax, Long livelloPulizia, Double temperaturaAcqua) {
         this.id = id;
         this.capacitaMax = capacitaMax;
         this.livelloPulizia = livelloPulizia;
         this.temperaturaAcqua = temperaturaAcqua;
     }
 
-    public Acquario(Integer capacitaMax, Integer livelloPulizia, Double temperaturaAcqua) {
+    public Acquario(Integer capacitaMax, Long livelloPulizia, Double temperaturaAcqua) {
         this.capacitaMax = capacitaMax;
         this.livelloPulizia = livelloPulizia;
         this.temperaturaAcqua = temperaturaAcqua;
@@ -54,11 +58,11 @@ public class Acquario {
         this.capacitaMax = capacitaMax;
     }
 
-    public Integer getLivelloPulizia() {
+    public Long getLivelloPulizia() {
         return livelloPulizia;
     }
 
-    public void setLivelloPulizia(Integer livelloPulizia) {
+    public void setLivelloPulizia(Long livelloPulizia) {
         this.livelloPulizia = livelloPulizia;
     }
 

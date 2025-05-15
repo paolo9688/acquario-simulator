@@ -25,13 +25,13 @@ public class Pesce {
     @Min(0)
     @Max(100)
     @Column(name = "livello-fame")
-    private Integer livelloFame;
+    private Long livelloFame;
 
     @NotNull
     @Min(0)
     @Max(100)
     @Column(name = "livello-salute")
-    private Integer livelloSalute;
+    private Long livelloSalute;
 
     @NotNull
     @Column(name = "età")
@@ -39,7 +39,7 @@ public class Pesce {
 
     public Pesce() {}
 
-    public Pesce(Long id, String nome, String specie, Integer livelloFame, Integer livelloSalute, Integer eta) {
+    public Pesce(Long id, String nome, String specie, Long livelloFame, Long livelloSalute, Integer eta) {
         this.id = id;
         this.nome = nome;
         this.specie = specie;
@@ -48,7 +48,7 @@ public class Pesce {
         this.eta = eta;
     }
 
-    public Pesce(String nome, String specie, Integer livelloFame, Integer livelloSalute, Integer eta) {
+    public Pesce(String nome, String specie, Long livelloFame, Long livelloSalute, Integer eta) {
         this.nome = nome;
         this.specie = specie;
         this.livelloFame = livelloFame;
@@ -80,19 +80,19 @@ public class Pesce {
         this.specie = specie;
     }
 
-    public Integer getLivelloFame() {
+    public Long getLivelloFame() {
         return livelloFame;
     }
 
-    public void setLivelloFame(Integer livelloFame) {
+    public void setLivelloFame(Long livelloFame) {
         this.livelloFame = livelloFame;
     }
 
-    public Integer getLivelloSalute() {
+    public Long getLivelloSalute() {
         return livelloSalute;
     }
 
-    public void setLivelloSalute(Integer livelloSalute) {
+    public void setLivelloSalute(Long livelloSalute) {
         this.livelloSalute = livelloSalute;
     }
 

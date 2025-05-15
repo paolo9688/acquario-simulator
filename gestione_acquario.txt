@@ -1,0 +1,22 @@
+Esercizio Java, Spring Boot e MySQL: Simulatore di Acquario
+
+Crea un'applicazione Spring Boot che simula un acquario virtuale. L'applicazione dovrà permettere agli utenti di aggiungere pesci, nutrirli, monitorare i loro parametri vitali e simulare l'ecosistema dell'acquario.
+
+Funzionalità:
+
+    Modello Pesce: Un pesce avrà un nome, una specie (es. "Pesce Rosso", "Pesce Pagliaccio", "Guppy"), un livello di fame (da 0 a 100), un livello di salute (da 0 a 100), e un'età (in giorni).
+    Modello Acquario: Un acquario avrà una capacità massima di pesci, un livello di pulizia (da 0 a 100), una temperatura dell'acqua     
+    Nutrire Pesci: Gli utenti potranno nutrire i pesci nell'acquario. Nutrire i pesci aumenterà il loro livello di fame e diminuirà leggermente il livello di pulizia dell'acquario.
+    Monitoraggio Parametri: L'applicazione mostrerà i parametri vitali di ogni pesce (fame, salute, età) e i parametri dell'acquario (pulizia, temperatura).
+    Simulazione Ecosistema: Implementa una logica di simulazione che aggiorna periodicamente i parametri dei pesci e dell'acquario. Ad esempio:
+        Fame: Il livello di fame dei pesci diminuisce nel tempo. Se un pesce raggiunge un livello di fame troppo basso, la sua salute diminuisce.
+        Salute: La salute di un pesce può diminuire a causa della fame o di una pulizia insufficiente dell'acquario.
+        Pulizia: Il livello di pulizia dell'acquario diminuisce nel tempo e aumenta quando l'utente pulisce l'acquario.
+        Età: L'età dei pesci aumenta nel tempo.
+        Morte: Se la salute di un pesce raggiunge zero, il pesce muore e viene rimosso dall'acquario.
+    Pulizia Acquario: Gli utenti potranno pulire l'acquario, aumentando il livello di pulizia.
+    Bonus (opzionale):
+        Compatibilità tra specie: Implementa una logica di compatibilità tra le specie di pesci. Alcune specie potrebbero non convivere pacificamente.
+        Decorazioni: Aggiungi la possibilità di aggiungere decorazioni all'acquario.
+        Malattie: Implementa la possibilità che i pesci si ammalino.
+        Frontend: Crea un frontend interattivo per visualizzare l'acquario e interagire con esso.
