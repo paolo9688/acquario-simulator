@@ -48,14 +48,6 @@ public class Pesce {
         this.eta = eta;
     }
 
-    public Pesce(String nome, String specie, Long livelloFame, Long livelloSalute, Integer eta) {
-        this.nome = nome;
-        this.specie = specie;
-        this.livelloFame = livelloFame;
-        this.livelloSalute = livelloSalute;
-        this.eta = eta;
-    }
-
     public Long getId() {
         return id;
     }

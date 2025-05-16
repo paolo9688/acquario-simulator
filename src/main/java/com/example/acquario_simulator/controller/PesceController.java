@@ -1,12 +1,35 @@
 package com.example.acquario_simulator.controller;
 
+import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.service.PesceService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pesci")
 public class PesceController {
 
+    @Autowired
     private PesceService pesceService;
+
+    // Aggiungi un nuovo pesce:
+    @PostMapping("/create-pesce")
+    public ResponseEntity<Pesce> createPesce(@RequestBody Pesce pesce) {
+        Pesce pesceToAdd = pesceService.createPesce(pesce);
+        return ResponseEntity.ok(pesceToAdd);
+    }
+
+    // Nutri i pesci:
+    @PutMapping("/nutri-pesci")
+    public ResponseEntity<List<Pesce>> nutriPesci() {
+        List<Pesce> pesciDaNutrire = pesceService.nutriPesci();
+
+        if (pesciDaNutrire == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pesciDaNutrire);
+    }
 }

@@ -36,12 +36,6 @@ public class Acquario {
         this.temperaturaAcqua = temperaturaAcqua;
     }
 
-    public Acquario(Integer capacitaMax, Long livelloPulizia, Double temperaturaAcqua) {
-        this.capacitaMax = capacitaMax;
-        this.livelloPulizia = livelloPulizia;
-        this.temperaturaAcqua = temperaturaAcqua;
-    }
-
     public Long getId() {
         return id;
     }
