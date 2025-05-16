@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PesceService {
@@ -19,6 +20,18 @@ public class PesceService {
     // Aggiungi un nuovo pesce:
     public Pesce createPesce(Pesce pesce) {
         return pesceRepository.save(pesce);
+    }
+
+    // Cancella un pesce esistente:
+    public Optional<Pesce> deletePesce(Long id) {
+        Optional<Pesce> pesceOptional = pesceRepository.findById(id);
+
+        if (pesceOptional.isPresent()) {
+            pesceRepository.deleteById(id);
+            return pesceOptional;
+        } else {
+            return Optional.empty();
+        }
     }
 
     // Nutrire i pesci:

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pesci")
@@ -20,6 +21,17 @@ public class PesceController {
     public ResponseEntity<Pesce> createPesce(@RequestBody Pesce pesce) {
         Pesce pesceToAdd = pesceService.createPesce(pesce);
         return ResponseEntity.ok(pesceToAdd);
+    }
+
+    // Cancella un pesce esistente:
+    @DeleteMapping("/delete-pesce/{id}")
+    public ResponseEntity<Optional<Pesce>> deletePesce(@PathVariable Long id) {
+        Optional<Pesce> pesceToDelete = pesceService.deletePesce(id);
+
+        if (pesceToDelete == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pesceToDelete);
     }
 
     // Nutri i pesci:
