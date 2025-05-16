@@ -23,6 +23,13 @@ public class PesceController {
         return ResponseEntity.ok(pesceToAdd);
     }
 
+    // Ottieni tutti i pesci:
+    @GetMapping("/find-pesci")
+    public ResponseEntity<List<Pesce>> getPesci() {
+        List<Pesce> pesciToFind = pesceService.getPesci();
+        return ResponseEntity.ok(pesciToFind);
+    }
+
     // Cancella un pesce esistente:
     @DeleteMapping("/delete-pesce/{id}")
     public ResponseEntity<Optional<Pesce>> deletePesce(@PathVariable Long id) {
@@ -32,6 +39,17 @@ public class PesceController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pesceToDelete);
+    }
+
+    // Modifica un pesce esistente:
+    @PutMapping("/update-pesce/{id}")
+    public ResponseEntity<Optional<Pesce>> updatePesce(@PathVariable Long id, @RequestBody Pesce pesceDetails) {
+        Optional<Pesce> pesceToUpdate = pesceService.updatePesce(id, pesceDetails);
+
+        if (pesceToUpdate.isPresent()) {
+            return ResponseEntity.ok(pesceToUpdate);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // Nutri i pesci:

@@ -22,6 +22,12 @@ public class PesceService {
         return pesceRepository.save(pesce);
     }
 
+    // Ottieni tutti i pesci:
+    public List<Pesce> getPesci() {
+        List<Pesce> listaPesci = pesceRepository.findAll();
+        return listaPesci;
+    }
+
     // Cancella un pesce esistente:
     public Optional<Pesce> deletePesce(Long id) {
         Optional<Pesce> pesceOptional = pesceRepository.findById(id);
@@ -29,6 +35,23 @@ public class PesceService {
         if (pesceOptional.isPresent()) {
             pesceRepository.deleteById(id);
             return pesceOptional;
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    // Modifica un pesce esistente:
+    public Optional<Pesce> updatePesce(Long id, Pesce pesceDetails) {
+        Optional<Pesce> pesceOptional = pesceRepository.findById(id);
+
+        if (pesceOptional.isPresent()) {
+            pesceOptional.get().setNome(pesceDetails.getNome());
+            pesceOptional.get().setSpecie(pesceDetails.getSpecie());
+            pesceOptional.get().setLivelloFame(pesceDetails.getLivelloFame());
+            pesceOptional.get().setLivelloSalute(pesceDetails.getLivelloSalute());
+            pesceOptional.get().setEta(pesceDetails.getEta());
+            Pesce pesce = pesceRepository.save(pesceOptional.get());
+            return Optional.of(pesce);
         } else {
             return Optional.empty();
         }
