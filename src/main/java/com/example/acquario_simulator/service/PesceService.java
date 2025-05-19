@@ -2,20 +2,25 @@ package com.example.acquario_simulator.service;
 
 import com.example.acquario_simulator.entity.Acquario;
 import com.example.acquario_simulator.entity.Pesce;
+import com.example.acquario_simulator.repository.AcquarioRepository;
 import com.example.acquario_simulator.repository.PesceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PesceService {
 
+    public static final Long MAXFAME = 100L;
+
     @Autowired
     private PesceRepository pesceRepository;
 
-    private Acquario acquario;
+    @Autowired
+    private AcquarioRepository acquarioRepository;
 
     // Aggiungi un nuovo pesce:
     public Pesce createPesce(Pesce pesce) {
@@ -58,18 +63,35 @@ public class PesceService {
     }
 
     // Nutrire i pesci:
-    public List<Pesce> nutriPesci() {
+    public List<Pesce> nutriPesci(Long idAqcuario, Long livelloFame, Long livelloPulizia) {
         // Trovo tutti i pesci dell'acquario:
         List<Pesce> listaPesci = pesceRepository.findAll();
 
-        // Ciclo tutti i pesci e ad ognuno aggiungo 50 al livello di fame:
+        // Creo un arrayList vuoto di pesci nutriti:
+        List<Pesce> pesciNutriti = new ArrayList<>();
+
+        // Ciclo tutti i pesci e ad ognuno aggiungo il livello di fame in input:
         for (Pesce pesce : listaPesci) {
-            pesce.setLivelloFame(pesce.getLivelloFame() + 50);
+            pesce.setLivelloFame(pesce.getLivelloFame() + livelloFame);
+
+            // Se il livello di fame è maggiore della fame massima, lo imposto a fame massima:
+            if (pesce.getLivelloFame() > MAXFAME) {
+                pesce.setLivelloFame(MAXFAME);
+            }
+
+            // Salvo i pesci nutriti nel nuovo arrayList:
+            Pesce pesceNutrito = pesceRepository.save(pesce);
+            pesciNutriti.add(pesceNutrito);
         }
 
-        // Diminuisco di 15 il livello di pulizia dell'acquario:
-        acquario.setLivelloPulizia(acquario.getLivelloPulizia() - 15);
+        Optional<Acquario> acquarioOptional = acquarioRepository.findById(idAqcuario);
 
-        return listaPesci;
+        // Diminuisco il livello di pulizia dell'acquario col valore in input:
+        if (acquarioOptional.isPresent()) {
+            acquarioOptional.get().setLivelloPulizia(acquarioOptional.get().getLivelloPulizia() - livelloPulizia);
+            acquarioRepository.save(acquarioOptional.get());
+        }
+
+        return pesciNutriti;
     }
 }

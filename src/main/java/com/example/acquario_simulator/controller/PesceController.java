@@ -1,5 +1,6 @@
 package com.example.acquario_simulator.controller;
 
+import com.example.acquario_simulator.entity.Acquario;
 import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.service.PesceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,9 @@ public class PesceController {
     }
 
     // Nutri i pesci:
-    @PutMapping("/nutri-pesci")
-    public ResponseEntity<List<Pesce>> nutriPesci() {
-        List<Pesce> pesciDaNutrire = pesceService.nutriPesci();
+    @PutMapping("/nutri-pesci/{acquarioId}")
+    public ResponseEntity<List<Pesce>> nutriPesci(@PathVariable Long acquarioId, @RequestParam Long livelloFame, @RequestParam Long livelloPulizia) {
+        List<Pesce> pesciDaNutrire = pesceService.nutriPesci(acquarioId, livelloFame, livelloPulizia);
 
         if (pesciDaNutrire == null) {
             return ResponseEntity.notFound().build();
