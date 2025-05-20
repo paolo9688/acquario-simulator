@@ -10,6 +10,8 @@ import java.util.Optional;
 @Service
 public class AcquarioService {
 
+    private static final Long MAXPULIZIA = 100L;
+
     @Autowired
     private AcquarioRepository acquarioRepository;
 
@@ -32,6 +34,25 @@ public class AcquarioService {
             acquarioOptional.get().setCapacitaMax(acquarioDetails.getCapacitaMax());
             acquarioOptional.get().setLivelloPulizia(acquarioDetails.getLivelloPulizia());
             acquarioOptional.get().setTemperaturaAcqua(acquarioDetails.getTemperaturaAcqua());
+            Acquario acquario = acquarioRepository.save(acquarioOptional.get());
+            return Optional.of(acquario);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    // Pulizia acquario:
+    public Optional<Acquario> puliziaAcquario(Long id, Long livelloPulizia) {
+        Optional<Acquario> acquarioOptional = getAcquarioById(id);
+
+        if (acquarioOptional.isPresent()) {
+            Long puliziaIniziale = acquarioOptional.get().getLivelloPulizia();
+            acquarioOptional.get().setLivelloPulizia(puliziaIniziale + livelloPulizia);
+
+            if (acquarioOptional.get().getLivelloPulizia() > MAXPULIZIA) {
+                acquarioOptional.get().setLivelloPulizia(MAXPULIZIA);
+            }
+
             Acquario acquario = acquarioRepository.save(acquarioOptional.get());
             return Optional.of(acquario);
         } else {

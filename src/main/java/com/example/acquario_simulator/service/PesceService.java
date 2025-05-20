@@ -106,10 +106,10 @@ public class PesceService {
         Optional<Acquario> acquario = acquarioRepository.findById(idAcquario);
         List<Pesce> listaPesci = pesceRepository.findAll();
 
-        // Step 1 - creare un oggetto parametri:
+        // Step 1 - Creo un oggetto parametri:
         MostraParametri parametri = new MostraParametri();
 
-        // Step 2 - copio i dati (mi sono caricato l'acquario e i pesci) all'interno dell'oggetto:
+        // Step 2 - Copio i dati (mi sono caricato l'acquario e i pesci) all'interno dell'oggetto:
         if (acquario.isPresent()){
             Long livelloPulizia = acquario.get().getLivelloPulizia();
             Double temperaturaAcqua = acquario.get().getTemperaturaAcqua();
@@ -119,7 +119,7 @@ public class PesceService {
 
         parametri.setListaPesci(listaPesci);
 
-        // Step 3 - ritorno l'oggetto con i parametri copiati:
+        // Step 3 - Ritorno l'oggetto con i parametri copiati:
         return parametri;
     }
 }

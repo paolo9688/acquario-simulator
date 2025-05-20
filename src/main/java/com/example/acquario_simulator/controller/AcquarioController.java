@@ -44,4 +44,15 @@ public class AcquarioController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    // Pulizia acquario:
+    @PutMapping("/pulizia-acquario/{id}")
+    public ResponseEntity<Optional<Acquario>> puliziaAcquario(@PathVariable Long id, @RequestParam Long livelloPulizia) {
+        Optional<Acquario> acquarioToClean = acquarioService.puliziaAcquario(id, livelloPulizia);
+
+        if (acquarioToClean.isPresent()) {
+            return ResponseEntity.ok(acquarioToClean);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
