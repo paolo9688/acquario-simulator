@@ -1,6 +1,7 @@
 package com.example.acquario_simulator.service;
 
 import com.example.acquario_simulator.entity.Acquario;
+import com.example.acquario_simulator.entity.MostraParametri;
 import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.repository.AcquarioRepository;
 import com.example.acquario_simulator.repository.PesceRepository;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Service
 public class PesceService {
 
-    public static final Long MAXFAME = 100L;
+    private static final Long MAXFAME = 100L;
 
     @Autowired
     private PesceRepository pesceRepository;
@@ -89,10 +90,36 @@ public class PesceService {
 
         // Diminuisco il livello di pulizia dell'acquario col valore in input:
         if (acquarioOptional.isPresent()) {
-            acquarioOptional.get().setLivelloPulizia(acquarioOptional.get().getLivelloPulizia() - livelloPulizia);
+            Long livelloPuliziaIniziale = acquarioOptional.get().getLivelloPulizia();
+            acquarioOptional.get().setLivelloPulizia(livelloPuliziaIniziale - livelloPulizia);
             acquarioRepository.save(acquarioOptional.get());
         }
 
         return pesciNutriti;
+    }
+
+    // Monitorare l'ecosistema:
+    public MostraParametri mostraParametri(Long idAcquario) {
+        // Obiettivo: travasare i dati all'interno di un oggetto parametri
+
+        // Step 0 - Trovo l'acquario per id e la lista di pesci:
+        Optional<Acquario> acquario = acquarioRepository.findById(idAcquario);
+        List<Pesce> listaPesci = pesceRepository.findAll();
+
+        // Step 1 - creare un oggetto parametri:
+        MostraParametri parametri = new MostraParametri();
+
+        // Step 2 - copio i dati (mi sono caricato l'acquario e i pesci) all'interno dell'oggetto:
+        if (acquario.isPresent()){
+            Long livelloPulizia = acquario.get().getLivelloPulizia();
+            Double temperaturaAcqua = acquario.get().getTemperaturaAcqua();
+            parametri.setTemperaturaAcqua(temperaturaAcqua);
+            parametri.setLivelloPulizia(livelloPulizia);
+        }
+
+        parametri.setListaPesci(listaPesci);
+
+        // Step 3 - ritorno l'oggetto con i parametri copiati:
+        return parametri;
     }
 }

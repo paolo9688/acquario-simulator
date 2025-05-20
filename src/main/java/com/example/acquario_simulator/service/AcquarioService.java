@@ -1,7 +1,6 @@
 package com.example.acquario_simulator.service;
 
 import com.example.acquario_simulator.entity.Acquario;
-import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.repository.AcquarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package com.example.acquario_simulator.controller;
 
 import com.example.acquario_simulator.entity.Acquario;
+import com.example.acquario_simulator.entity.MostraParametri;
 import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.service.PesceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,16 @@ public class PesceController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pesciDaNutrire);
+    }
+
+    // Mostra parametri ecosistema:
+    @GetMapping("/mostra-parametri/{acquarioId}")
+    public ResponseEntity<MostraParametri> mostraParametri(@PathVariable Long acquarioId) {
+        MostraParametri parametri = pesceService.mostraParametri(acquarioId);
+
+        if (parametri == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(parametri);
     }
 }
