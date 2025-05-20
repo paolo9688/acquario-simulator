@@ -3,6 +3,7 @@ package com.example.acquario_simulator.controller;
 import com.example.acquario_simulator.entity.Acquario;
 import com.example.acquario_simulator.entity.MostraParametri;
 import com.example.acquario_simulator.entity.Pesce;
+import com.example.acquario_simulator.service.AcquarioService;
 import com.example.acquario_simulator.service.PesceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class PesceController {
 
     @Autowired
     private PesceService pesceService;
+
+    @Autowired
+    private AcquarioService acquarioService;
 
     // Aggiungi un nuovo pesce:
     @PostMapping("/create-pesce")
@@ -37,7 +41,7 @@ public class PesceController {
     public ResponseEntity<Optional<Pesce>> deletePesce(@PathVariable Long id) {
         Optional<Pesce> pesceToDelete = pesceService.deletePesce(id);
 
-        if (pesceToDelete == null) {
+        if (pesceToDelete.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(pesceToDelete);
@@ -58,11 +62,16 @@ public class PesceController {
     @PutMapping("/nutri-pesci/{acquarioId}")
     public ResponseEntity<List<Pesce>> nutriPesci(@PathVariable Long acquarioId, @RequestParam Long livelloFame, @RequestParam Long livelloPulizia) {
         List<Pesce> pesciDaNutrire = pesceService.nutriPesci(acquarioId, livelloFame, livelloPulizia);
+        Optional<Acquario> acquarioOptional = acquarioService.getAcquarioById(acquarioId);
 
-        if (pesciDaNutrire == null) {
+        if (acquarioOptional.isPresent()) {
+            return ResponseEntity.ok(pesciDaNutrire);
+        }
+        return  ResponseEntity.notFound().build();
+        /*if (pesciDaNutrire == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(pesciDaNutrire);
+        return ResponseEntity.ok(pesciDaNutrire);*/
     }
 
     // Mostra parametri ecosistema:

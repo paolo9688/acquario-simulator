@@ -26,12 +26,12 @@ public class AcquarioController {
     // Trova un acquario per id:
     @GetMapping("/find-acquario/{id}")
     public ResponseEntity<Optional<Acquario>> getAcquarioById(@PathVariable Long id) {
-        Optional<Acquario> acquario = acquarioService.getAcquarioById(id);
+        Optional<Acquario> acquarioOptional = acquarioService.getAcquarioById(id);
 
-        if (acquario == null) {
+        if (acquarioOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(acquario);
+        return ResponseEntity.ok(acquarioOptional);
     }
 
     // Modifica l'acquario:
