@@ -64,24 +64,21 @@ public class PesceController {
         List<Pesce> pesciDaNutrire = pesceService.nutriPesci(acquarioId, livelloFame, livelloPulizia);
         Optional<Acquario> acquarioOptional = acquarioService.getAcquarioById(acquarioId);
 
-        if (acquarioOptional.isPresent()) {
+        if (acquarioOptional.isPresent() && pesciDaNutrire != null) {
             return ResponseEntity.ok(pesciDaNutrire);
         }
         return  ResponseEntity.notFound().build();
-        /*if (pesciDaNutrire == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(pesciDaNutrire);*/
     }
 
     // Mostra parametri ecosistema:
     @GetMapping("/mostra-parametri/{acquarioId}")
     public ResponseEntity<MostraParametri> mostraParametri(@PathVariable Long acquarioId) {
         MostraParametri parametri = pesceService.mostraParametri(acquarioId);
+        Optional<Acquario> acquarioOptional = acquarioService.getAcquarioById(acquarioId);
 
-        if (parametri == null) {
-            return ResponseEntity.notFound().build();
+        if (acquarioOptional.isPresent() && parametri != null) {
+            return ResponseEntity.ok(parametri);
         }
-        return ResponseEntity.ok(parametri);
+        return ResponseEntity.notFound().build();
     }
 }

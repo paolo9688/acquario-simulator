@@ -1,7 +1,6 @@
 package com.example.acquario_simulator.controller;
 
 import com.example.acquario_simulator.entity.Acquario;
-import com.example.acquario_simulator.entity.Pesce;
 import com.example.acquario_simulator.service.AcquarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
