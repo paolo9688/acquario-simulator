@@ -18,6 +18,12 @@ import java.util.Optional;
 @SpringBootApplication
 public class AcquarioSimulatorApplication implements ApplicationRunner {
 
+	// variabili statiche:
+	public static final int DELTA_PARAM = 3;
+	public static final int MIN_PULIZIA = 20;
+	public static final int MIN_SALUTE = 5;
+	public static final int MAX_FAME = 95;
+
 	@Autowired
 	private PesceRepository pesceRepository;
 
@@ -59,16 +65,14 @@ public class AcquarioSimulatorApplication implements ApplicationRunner {
 		// il massimo di giorni che può durare il ciclo:
 		Integer giorniLimite = 50;
 
-		// inizializzo una lista di pesci:
-		List<Pesce> listaPesci;
 
 		// faccio passare 1000 giorni e ad ogni giorno verifico l'ecosistema:
 		while (time < giorniLimite) {
 			time = time + 1;
-			updateEcosistema();
 
 			// a ogni iterazione aggiorno la mia lista di pesci:
-			listaPesci = pesceRepository.findAll();
+			// inizializzo una lista di pesci:
+			List<Pesce> listaPesci = updateEcosistema();
 
 			// se non ci sono più pesci vivi dentro l'acquario, esco dal ciclo:
 			if (listaPesci.isEmpty())
@@ -85,8 +89,8 @@ public class AcquarioSimulatorApplication implements ApplicationRunner {
 	}
 
 	@Transactional
-	public void updateEcosistema() {
-		// In questo metodo verifico tutti i parametri dell'ecosistema e lo aggiorna in base ad essi
+	public List<Pesce> updateEcosistema() {
+		// In questo metodo verifico tutti i parametri dell'ecosistema e lo aggiorna in base ad essi:
 		Optional<Acquario> acquario = acquarioRepository.findById(1L);
 		List<Pesce> listaPesci = pesceRepository.findAll();
 
@@ -96,7 +100,7 @@ public class AcquarioSimulatorApplication implements ApplicationRunner {
 
 		// l'acquario giorno dopo giorno diventa sempre più sporco:
 		if (acquario.isPresent()) {
-			acquario.get().setLivelloPulizia(Math.max(0, acquario.get().getLivelloPulizia() - 3));
+			acquario.get().setLivelloPulizia(Math.max(0, acquario.get().getLivelloPulizia() - DELTA_PARAM));
 
 			// salvo il nuovo stato dell'acquario:
 			acquarioRepository.save(acquario.get());
@@ -105,20 +109,20 @@ public class AcquarioSimulatorApplication implements ApplicationRunner {
 		// simulo le condizioni dei pesci giorno dopo giorno:
 		for (Pesce pesce : listaPesci) {
 			// la fame dei pesci aumenta giorno dopo giorno:
-			pesce.setLivelloFame(Math.min(100, pesce.getLivelloFame() + 3));
+			pesce.setLivelloFame(Math.min(100, pesce.getLivelloFame() + DELTA_PARAM));
 
 			// se l'acquario è troppo sporco, la salute dei pesci diminuisce:
 			if (acquario.isPresent()) {
-				if (acquario.get().getLivelloPulizia() <= 20) {
-					pesce.setLivelloSalute(Math.max(0, pesce.getLivelloSalute() - 3));
+				if (acquario.get().getLivelloPulizia() <= MIN_PULIZIA) {
+					pesce.setLivelloSalute(Math.max(0, pesce.getLivelloSalute() - DELTA_PARAM));
 				}
 			}
 
 			// se la salute dei pesci è troppo bassa o se la fame è troppo alta, i pesci muoiono:
-			if (pesce.getLivelloFame() > 95) {
+			if (pesce.getLivelloFame() > MAX_FAME) {
 				pesciMortiPerFame++;
 				pesciDaEliminare.add(pesce);
-			} else if (pesce.getLivelloSalute() < 5) {
+			} else if (pesce.getLivelloSalute() < MIN_SALUTE) {
 				pesciMortiPerMalattia++;
 				pesciDaEliminare.add(pesce);
 			} else {
@@ -127,8 +131,10 @@ public class AcquarioSimulatorApplication implements ApplicationRunner {
 		}
 
 		// salvo il nuovo stato dei pesci:
-		pesceRepository.saveAll(pesciDaSalvare);
+		List<Pesce>  listaPesces = pesceRepository.saveAll(pesciDaSalvare);
 		pesceRepository.deleteAll(pesciDaEliminare);
+
+		return listaPesces;
 	}
 
 	@Override
